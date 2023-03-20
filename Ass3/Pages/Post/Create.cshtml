@@ -1,0 +1,45 @@
+@page
+@model Ass3.Pages_Post.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create new post</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group mt-2">
+                <label asp-for="Post.Title" class="control-label"></label>
+                <input asp-for="Post.Title" class="form-control" />
+                <span asp-validation-for="Post.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <label asp-for="Post.Content" class="control-label"></label>
+                <textarea asp-for="Post.Content" class="form-control"></textarea>
+                <span asp-validation-for="Post.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check mt-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Post.PublishStatus" /> @Html.DisplayNameFor(model => model.Post.PublishStatus)
+                </label>
+            </div>
+            <div class="form-group mt-2">
+                <label asp-for="Post.CategoryID" class="control-label"></label>
+                <select asp-for="Post.CategoryID" class ="form-control" asp-items="ViewBag.CategoryID"></select>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index" class="mt-2">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

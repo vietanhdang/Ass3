@@ -1,0 +1,46 @@
+@page
+@using Ass3.Models;
+@using SignalRAssignment.Common;
+@model Ass3.Pages_Post.IndexModel
+@using Microsoft.AspNetCore.Http;
+@{
+    var account = VaSession.Get<AppUser>(HttpContext.Session, "Account");
+    bool isLogged = false;
+    if (account != null)
+    {
+        isLogged = true;
+    }
+    ViewData["Title"] = "Index";
+}
+<style>
+    .card-opacity {
+        background-color: rgb(237 216 216 / 50%);
+    }
+</style>
+<h1 class="text-center">LIST OF POST</h1>
+
+<p class="text-center">
+    <a asp-page="Create">Create New Post</a>
+</p>
+<div class="row" id="post-list">
+    @foreach (var item in Model.Post)
+    {
+        <div class="card col-md-4 m-2 @(item.PublishStatus==false ? "card-opacity" : "" )" style="width: 18rem;" id="post-@item.PostID">
+            <div class="card-body">
+                <h5 class="card-title"> @item.Title @(item.PublishStatus == false && account.UserID == item.AuthorID ? "(hidden)" : "")</h5>
+                <a href="javascript:void(0)" class="card-subtitle mb-2 text-muted">@item.Author.Email</a>
+                <p class="card-text my-2">@item.Content</p>
+                <p class="card-link">@item.UpdatedDate.ToString("dd/MM/yyyy hh:mm")</p>
+                <div>
+                    @if (isLogged && account.UserID == item.AuthorID)
+                    {
+                        <a asp-page="Edit" asp-route-id="@item.PostID" class="mr-2 text-primary">Edit</a>
+                        <a asp-page="Delete" asp-route-id="@item.PostID" class="mr-2 text-danger">Delete</a>
+                    }
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+
